@@ -92,14 +92,14 @@ function getMessagesUsuario(numero) {
 function getMessage(numero, contatoNome) {
     let userProfile = contato.contatos['whats-users']
 
-    let perfil = userProfile.find(user => user.number == numero)
+    let perfil = userProfile.find(user => user.number == numero.trim())
 
     // Verifica se o perfil do usuário foi encontrado e, em caso afirmativo, 
     // procura o contato com o nome correspondente e retorna um objeto com as informações do contato e suas mensagens 
     // ou false caso o contato não seja encontrado 
     if(perfil){
         // Utiliza o método find para encontrar o contato com o nome correspondente e armazena o resultado na variável contato
-        let contato = perfil.contacts.find(contact => contact.name == contatoNome)
+        let contato = perfil.contacts.find(contact => contact.name.toLowerCase().trim() == contatoNome.toLowerCase().trim())
         // Verifica se o contato foi encontrado e retorna um objeto com as informações do contato e suas mensagens ou false caso o contato não seja encontrado
         if(contato) {
             return {
@@ -107,6 +107,38 @@ function getMessage(numero, contatoNome) {
                 contact: contato.name,
                 messages: contato.messages.map(message => `time: ${message.time} - ${message.sender} - ${message.content}`)
             }
+        }else{
+            return false
+        }
+    }else{
+        return false
+    }
+}
+
+// Função para retornar as mensagens de um contato específico de um usuário específico que contenham uma palavra-chave específica, recebendo o número do usuário, o nome do contato e a palavra-chave como parâmetros
+function getPesquisaPorMensagem(numero, contatoNome, palavraChave) {
+    let userProfile = contato.contatos['whats-users']
+
+    let perfil = userProfile.find(user => user.number == numero)
+
+    if(perfil) {
+
+        let contatoEncontrado = perfil.contacts.find(contact => contact.name.toLowerCase().trim() == contatoNome.toLowerCase().trim())
+    
+        if(contatoEncontrado) {
+            let mensagensFiltradas = contatoEncontrado.messages.filter(message => message.content.toLowerCase().includes(palavraChave.toLowerCase()))
+
+            if(mensagensFiltradas.length > 0) {
+                return {
+                    user: perfil.nickname,
+                    contact: contato.name,
+                    palavra: palavraChave,
+                    messages: mensagensFiltradas.map(message => `time: ${message.time} - ${message.sender} - ${message.content}`)
+                }
+            }else{
+                return false
+            }
+
         }else{
             return false
         }
@@ -127,5 +159,6 @@ module.exports = {
     getInfoUsuario,
     getUserContatos,
     getMessagesUsuario,
-    getMessage
+    getMessage,
+    getPesquisaPorMensagem
 }
