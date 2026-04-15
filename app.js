@@ -141,6 +141,9 @@ app.get('/v1/whatsapp/help', function(request, response){
             }
         ]
     }
+
+    response.status(200)
+    response.json(docAPI)
 })
 
 app.get('/', function(request, response){
