@@ -148,5 +148,5 @@ app.get('/', function(request, response){
 })
 
 app.listen(8080, function(){
-    console.log('Servidor rodando na porta 2020')
+    console.log('Servidor rodando na porta 8080')
 })
