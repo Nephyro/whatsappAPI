@@ -147,6 +147,6 @@ app.get('/', function(request, response){
     response.redirect('/v1/whatsapp/help')
 })
 
-app.listen(2020, function(){
+app.listen(8080, function(){
     console.log('Servidor rodando na porta 2020')
 })
